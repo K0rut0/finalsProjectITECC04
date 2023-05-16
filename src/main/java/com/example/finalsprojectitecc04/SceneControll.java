@@ -1,0 +1,26 @@
+package com.example.finalsprojectitecc04;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+
+import java.io.IOException;
+
+public class SceneControll {
+    private static Stage stage;
+    private static Scene scene;
+    private static Parent root;
+    public static void changeToSign() throws IOException{
+        root = FXMLLoader.load(SceneControll.class.getResource("SignUp.fxml"));
+    }
+    public static void registerPage(ActionEvent e) throws IOException {
+        SceneControll.changeToSign();
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+}
