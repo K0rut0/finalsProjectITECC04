@@ -28,7 +28,7 @@
       </TextFlow>
       <VBox alignment="TOP_CENTER" layoutY="161.0" prefHeight="224.0" prefWidth="600.0" spacing="20.0" style="-fx-padding: 0;" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="161.0">
          <children>
-            <TextField fx:id="username" maxWidth="300.0" promptText="Username">
+            <TextField fx:id="username" maxWidth="300.0" promptText="Username" style="-fx-border-color: white;">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>
@@ -48,7 +48,12 @@
             </PasswordField>
             <HBox alignment="CENTER" prefHeight="46.0" prefWidth="600.0" spacing="30.0">
                <children>
-                  <Button layoutX="10.0" layoutY="10.0" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-color: #A9D6E5;" text="Register">
+                  <Button layoutX="10.0" layoutY="10.0" maxWidth="200.0" minWidth="140.0" mnemonicParsing="false" onAction="#signUp" prefHeight="25.0" prefWidth="127.0" style="-fx-background-color: #A9D6E5;" text="Register">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="210.0" layoutY="10.0" maxWidth="200.0" minWidth="140.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #A9D6E5;" text="Back to Login">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

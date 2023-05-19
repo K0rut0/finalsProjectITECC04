@@ -1,14 +1,16 @@
 package com.example.finalsprojectitecc04;
+import java.io.IOException;
 import java.sql.*;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class SignController {
-    Connection connection = DriverManager.getConnection(
-            "jdbc:mariadb://localhost:3306/test",
-            "root", "Kill[]Switch*>[]"
-    );
+    static Connection connection;
+    public static void connect(Connection conn){
+        connection = conn;
+    }
     @FXML
     private TextField username;
     @FXML
@@ -22,7 +24,7 @@ public class SignController {
 
     public boolean checkValidity(){
         String a = primaryPass.getText();
-        String b = primaryPass.getText();
+        String b = confirmPass.getText();
         int n = a.compareTo(b);
         if(n == 0){
             return true;
@@ -36,7 +38,7 @@ public class SignController {
     @FXML
     public void signUp(){
         try(PreparedStatement statement = connection.prepareStatement("""
-                    INSERT INTO user_credentials(username, password) VALUES (?, ?)
+                    INSERT INTO user_credentials(username, pass) VALUES (?, ?)
                 """)) {
 
                 statement.setString(1, username.getText());
@@ -44,9 +46,15 @@ public class SignController {
                 int ins = statement.executeUpdate();
                 System.out.print("done");
         } catch (SQLException e) {
+            username.setText("");
+            username.setPromptText("Username already in use");
             throw new RuntimeException(e);
         }
-
     }
+    @FXML
+    public void backToLogin() throws IOException {
+        SceneControl.changeToLogin();
+    }
+
 
 }
