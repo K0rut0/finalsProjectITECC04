@@ -1,9 +1,14 @@
 package com.example.finalsprojectitecc04;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,6 +23,31 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class MainPageController {
+    public class BillInfo{
+        String billName;
+        String accountId;
+        int billAm;
+        Date dueDate;
+
+        public void createBill(String a, String b, int n, Date due) {
+            this.billName = a;
+            this.accountId = b;
+            this.billAm = n;
+            this.dueDate  = due;
+        }
+        public String getBillName(){
+            return billName;
+        }
+        public String getAccountId(){
+            return accountId;
+        }
+        public int getBillAm(){
+            return billAm;
+        }
+        public Date getDueDate(){
+            return dueDate;
+        }
+    }
     static Connection connection;
     public static void connect(Connection conn){
         connection = conn;
@@ -29,7 +59,17 @@ public class MainPageController {
     private TableView table;
     @FXML
     private Text billTotal;
+    @FXML
+    private TableColumn<BillInfo, String> BillName;
+    @FXML
+    private TableColumn<BillInfo, String> AccId;
+    @FXML
+    private TableColumn<BillInfo, Integer> billAmount;
+    @FXML
+    private TableColumn<BillInfo, Date> dueOn;
     private static String userName;
+
+    public ObservableList<BillInfo> bills = FXCollections.observableArrayList();
     public static void set(String user){
         userName = user;
     }
@@ -44,6 +84,20 @@ public class MainPageController {
         }
         billTotal.setText("PHP " + sum);
 
+    }
+    public void updateTable(ArrayList<String> names, ArrayList<String> accNums, ArrayList<Integer> dueAmount, ArrayList<Date> dueDates){
+        table.getItems().clear();
+        bills.clear();
+        BillName.setCellValueFactory(new PropertyValueFactory<BillInfo, String>("billName"));
+        AccId.setCellValueFactory(new PropertyValueFactory<BillInfo, String>("accountId"));
+        billAmount.setCellValueFactory(new PropertyValueFactory<BillInfo, Integer>("billAm"));
+        dueOn.setCellValueFactory(new PropertyValueFactory<BillInfo, Date>("dueDate"));
+        for(int i = 0; i<names.size(); i++){
+            BillInfo temp = new BillInfo();
+            temp.createBill(names.get(i), accNums.get(i), dueAmount.get(i), dueDates.get(i));
+            bills.add(temp);
+        }
+        table.setItems(bills);
     }
     public void getBills(){
         try(PreparedStatement statement = connection.prepareStatement("""
@@ -64,6 +118,7 @@ public class MainPageController {
             }
             System.out.println(dueDates);
             updateTotal(billVals);
+            updateTable(billNames, accNumbers, billVals, dueDates);
         } catch (SQLException sql){
             throw new RuntimeException(sql);
         }
@@ -96,6 +151,7 @@ public class MainPageController {
     public void initialize() throws IOException {
         setWelcomeMessage();
         getBills();
+
     }
 
 }
