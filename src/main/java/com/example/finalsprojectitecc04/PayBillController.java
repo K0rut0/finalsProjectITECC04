@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +33,7 @@ public class PayBillController {
         stage.close();
     }
     @FXML
-    public void payBill(){
+    public void payBill() throws IOException {
         int amount = 0;
         try(PreparedStatement statement = connection.prepareStatement("""
                  SELECT bill_amount FROM user_bills WHERE belongs_to=?""")){
@@ -51,7 +52,12 @@ public class PayBillController {
             statement.setString(3, billName.getText());
             statement.setString(4, accountNumber.getText());
             int execute = statement.executeUpdate();
+            SuccessWindow.displaySuccess();
         } catch (SQLException e){
+            SuccessWindow.displayError("Check info");
+            throw new RuntimeException(e);
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

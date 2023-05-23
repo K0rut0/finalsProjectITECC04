@@ -56,6 +56,7 @@ public class AddBillController {
                 int n = Integer.parseInt(amount);
                 statement.setInt(3, n);
             } catch(SQLException a){
+                SuccessWindow.displayError("Enter a valid Integer");
                 billAmount.setText("");
                 billAmount.setPromptText("Enter a valid integer");
                 throw new RuntimeException(a);
@@ -65,9 +66,12 @@ public class AddBillController {
             statement.setDate(4, dueDate);
             statement.setString(5, accId);
             int insert = statement.executeUpdate();
+            billAmount.setText("");
+            billName.setText("");
+            accNumber.setText("");
+            SuccessWindow.displaySuccess();
             System.out.println("done");
-
-        } catch (SQLException e){
+        } catch (SQLException | IOException e){
             throw new RuntimeException(e);
         }
 

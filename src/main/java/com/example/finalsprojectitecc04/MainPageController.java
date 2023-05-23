@@ -74,7 +74,7 @@ public class MainPageController {
         userName = user;
     }
     public void setWelcomeMessage() throws IOException {
-        welcomeMessage.setText("Welcome " + userName);
+        welcomeMessage.setText("Welcome " + userName +"!");
         System.out.println(welcomeMessage);
     }
     public void updateTotal(ArrayList<Integer> bills){
@@ -114,7 +114,6 @@ public class MainPageController {
                 billNames.add(exec.getString("bill_name"));
                 accNumbers.add(exec.getString("account_number"));
                 dueDates.add((exec.getDate("bill_due")));
-                //System.out.println(pass);
             }
             System.out.println(dueDates);
             updateTotal(billVals);

@@ -36,7 +36,7 @@ public class SignController {
 
     //}
     @FXML
-    public void signUp(){
+    public void signUp() throws IOException {
         try(PreparedStatement statement = connection.prepareStatement("""
                     INSERT INTO user_credentials(username, pass) VALUES (?, ?)
                 """)) {
@@ -45,9 +45,16 @@ public class SignController {
                 statement.setString(2, primaryPass.getText());
                 int ins = statement.executeUpdate();
                 System.out.print("done");
+                username.setText("");
+                primaryPass.setText("");
+                confirmPass.setText("");
+                SuccessWindow.displaySuccess();
         } catch (SQLException e) {
+            SuccessWindow.displayError("Username already in use!");
             username.setText("");
             username.setPromptText("Username already in use");
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

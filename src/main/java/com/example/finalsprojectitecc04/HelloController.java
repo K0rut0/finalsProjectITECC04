@@ -44,6 +44,7 @@ public class HelloController {
                 SceneControl.loggedIn(e, username.getText());
             }
         } catch (SQLException sql){
+            SuccessWindow.displayError("Error, no such account");
             throw new RuntimeException(sql);
         }
 
